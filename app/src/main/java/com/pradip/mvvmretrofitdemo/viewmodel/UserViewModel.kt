@@ -4,22 +4,33 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.pradip.mvvmretrofitdemo.Repository
-import com.pradip.mvvmretrofitdemo.model.User
-import com.pradip.mvvmretrofitdemo.utility.Utility.isInternetAvaliable
+import com.pradip.mvvmretrofitdemo.model.GetDataById
+import com.pradip.mvvmretrofitdemo.model.UserListItem
 
-class UserViewModel(private val context: Context) : ViewModel() {
-    private var listData = MutableLiveData<ArrayList<User>>()
 
+class UserViewModel(private val id: Context) : ViewModel() {
+
+    private var listData = MutableLiveData<MutableList<UserListItem>>()
+    private var userDetailsData = MutableLiveData<GetDataById>()
+// //   private var id:String=null!!
+    var repositoryq=Repository
     init {
-        var repositoryq = Repository
+         repositoryq = Repository
 
 
-        if(context.isInternetAvaliable()){
-            listData = repositoryq.getMutableLiveData(context)
-        }
+      /*  if(withContext().isInternetAvaliable()){
+
+
+        }*/
     }
-    fun getData():MutableLiveData<ArrayList<User>>{
+    fun getData():MutableLiveData<MutableList<UserListItem>>{
+        listData = repositoryq.getMutableLiveData()
         return listData
+    }
+    fun getDetailsData( id:String):MutableLiveData<GetDataById>{
+
+        userDetailsData = repositoryq.getMutableDetailsData(id)
+        return userDetailsData
     }
 }
 

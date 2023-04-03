@@ -5,7 +5,9 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.pradip.mvvmretrofitdemo.client.ApiClent
-import com.pradip.mvvmretrofitdemo.model.User
+import com.pradip.mvvmretrofitdemo.model.GetDataById
+import com.pradip.mvvmretrofitdemo.model.UserList
+import com.pradip.mvvmretrofitdemo.model.UserListItem
 import com.pradip.mvvmretrofitdemo.utility.Utility.hideProgressBar
 import com.pradip.mvvmretrofitdemo.utility.Utility.showProgressBar
 import retrofit2.Call
@@ -14,24 +16,24 @@ import retrofit2.Callback
 
 object Repository {
 
-    fun getMutableLiveData(context: Context): MutableLiveData<ArrayList<User>>{
-        val mutableLiveData = MutableLiveData<ArrayList<User>>()
+    fun getMutableLiveData(): MutableLiveData<MutableList<UserListItem>>{
+        val mutableLiveData = MutableLiveData<MutableList<UserListItem>>()
 
-        context.showProgressBar()
+       // context.showProgressBar()
 
-        ApiClent.apiServices.getUser().enqueue(object  : Callback<MutableList<User>>{
+        ApiClent.apiServices.getUser().enqueue(object  : Callback<MutableList<UserListItem>>{
             override fun onResponse(
-                call: Call<MutableList<User>>,
-                response: Response<MutableList<User>>
+                call: Call<MutableList<UserListItem>>,
+                response: Response<MutableList<UserListItem>>
             ) {
                hideProgressBar()
                 val userResponse = response.body()
                 userResponse?.let {
-                    mutableLiveData.value = it as ArrayList<User>
+                    mutableLiveData.value = it as MutableList<UserListItem>
                 }
             }
 
-            override fun onFailure(call: Call<MutableList<User>>, t: Throwable) {
+            override fun onFailure(call: Call<MutableList<UserListItem>>, t: Throwable) {
                hideProgressBar()
                 Log.i("error",t.localizedMessage)
             }
@@ -40,4 +42,33 @@ object Repository {
         Log.i("MYMutableData",mutableLiveData.value.toString())
        return mutableLiveData
     }
+
+    fun getMutableDetailsData( id:String): MutableLiveData<GetDataById>{
+        val mutableLiveDetailsData = MutableLiveData<GetDataById>()
+
+      //  context.showProgressBar()
+
+        ApiClent.apiServices.getDetails(id).enqueue(object  : Callback<GetDataById>{
+            override fun onResponse(
+                call: Call<GetDataById>,
+                response: Response<GetDataById>
+            ) {
+                hideProgressBar()
+                val userResponse = response.body()
+                userResponse?.let {
+                    mutableLiveDetailsData.value = it
+                }
+            }
+
+            override fun onFailure(call: Call<GetDataById>, t: Throwable) {
+                hideProgressBar()
+                Log.i("error",t.localizedMessage)
+            }
+
+        })
+        Log.i("MYMutableData",mutableLiveDetailsData.value.toString())
+        return mutableLiveDetailsData
+    }
+
+
 }
