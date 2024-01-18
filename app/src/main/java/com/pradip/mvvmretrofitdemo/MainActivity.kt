@@ -18,12 +18,13 @@ import com.pradip.mvvmretrofitdemo.viewmodelfactory.UserViewModelFactory
 
 class MainActivity : AppCompatActivity(), UserAdapter.onClickListerner{
     private lateinit var listUser:MutableList<UserListItem>
-    private lateinit var adpter : UserAdapter
+    private lateinit var adpter : UserAdap
     private lateinit var recycler_main:RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        ///RecyclerView Addede here...
         recycler_main = findViewById(R.id.recycler_main)
 
         recycler_main.layoutManager = LinearLayoutManager(this@MainActivity)
